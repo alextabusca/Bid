@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from datetime import datetime
 from decimal import *
 
+
 class Item(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=600)
@@ -37,19 +38,19 @@ class Item(models.Model):
             return bids[0].user
         else:
             return None
-    
+
     def get_time_left(self):
         now = datetime.now()
         naive = self.closes.replace(tzinfo=None)
         delta = naive - now
         ts = int(delta.total_seconds())
-        if (ts<=0):
+        if (ts <= 0):
             return ""
         else:
-            days = int(ts/86400)
-            hours = int( (ts % 86400)/3600 )
-            minutes = int( (ts % 3600)/60 )
-            seconds = int( (ts % 60)/1 )
+            days = int(ts / 86400)
+            hours = int((ts % 86400) / 3600)
+            minutes = int((ts % 3600) / 60)
+            seconds = int((ts % 60) / 1)
             arr = [days, hours, minutes, seconds]
             letters = "dhms"
             anything = False
@@ -57,8 +58,9 @@ class Item(models.Model):
             for i in xrange(4):
                 if arr[i]: anything = True
                 if anything:
-                    output += (str(arr[i])+letters[i]+" ")
+                    output += (str(arr[i]) + letters[i] + " ")
             return output[:-1]
+
 
 class Bid(models.Model):
     item = models.ForeignKey(Item)
