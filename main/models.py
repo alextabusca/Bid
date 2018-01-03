@@ -7,7 +7,7 @@ from decimal import *
 class Item(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=600)
-    image_url = models.CharField(max_length=100)
+    image = models.FileField(upload_to='images/')
     ask = models.DecimalField(default=0, max_digits=6, decimal_places=2)
     category = models.CharField(max_length=100)
     created_at = models.DateTimeField(default=datetime.now, blank=True)

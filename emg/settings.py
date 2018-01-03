@@ -102,3 +102,6 @@ STATIC_URL = '/static/'
 # subpath of your site, then it should be that subpath (e.g. '/myapp/')
 
 BASE_URL = '/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

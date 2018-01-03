@@ -16,13 +16,15 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from main import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', views.index, name='index'),
-    url(r'login/$', views.login_view, name='login_view'),
-    url(r'logout/$', views.logout_view, name='logout_view'),
-    url(r'me/$', views.me, name='me'),
-    url(r'item/(?P<id>\d*)/$', views.item, name='item'),
-    url(r'add/', views.create_item, name='add_item')
-]
+                  url(r'^admin/', include(admin.site.urls)),
+                  url(r'^$', views.index, name='index'),
+                  url(r'login/$', views.login_view, name='login_view'),
+                  url(r'logout/$', views.logout_view, name='logout_view'),
+                  url(r'me/$', views.me, name='me'),
+                  url(r'item/(?P<id>\d*)/$', views.item, name='item'),
+                  url(r'create_item/', views.create_item, name='create_item')
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

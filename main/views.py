@@ -1,33 +1,26 @@
-from django.shortcuts import render
-
 from main.forms import ItemForm
 from models import Item, Bid
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
-from django.shortcuts import render_to_response
-from django.template.context_processors import csrf
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from datetime import datetime
 from emg.settings import BASE_URL
 from django.shortcuts import render
 
-# Create your views here.
-from django.http import HttpResponse
-
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
 
 def create_item(request):
     if not request.user.is_authenticated():
-        return render(request, 'login.html')
+        return render(request, 'main/login.html')
     else:
         form = ItemForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             item = form.save(commit=False)
             item.user = request.user
-            item.image_url = request.FILES['album_logo']
-            file_type = item.image_url.url.split('.')[-1]
+            item.image = request.FILES['image']
+            file_type = item.image.url.split('.')[-1]
             file_type = file_type.lower()
             if file_type not in IMAGE_FILE_TYPES:
                 context = {
@@ -35,13 +28,13 @@ def create_item(request):
                     'form': form,
                     'error_message': 'Image file must be PNG, JPG, or JPEG',
                 }
-                return render(request, 'main/create_album.html', context)
+                return render(request, 'main/create_item.html', context)
             item.save()
             return render(request, 'main/item.html', {'item': item})
         context = {
             "form": form,
         }
-        return render(request, 'main/create_album.html', context)
+        return render(request, 'main/create_item.html', context)
 
 
 def index(request):
