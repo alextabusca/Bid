@@ -20,6 +20,7 @@ def create_item(request):
             item = form.save(commit=False)
             item.user = request.user
             item.image = request.FILES['image']
+            item.creator = item.user.username
             file_type = item.image.url.split('.')[-1]
             file_type = file_type.lower()
             if file_type not in IMAGE_FILE_TYPES:
@@ -30,7 +31,8 @@ def create_item(request):
                 }
                 return render(request, 'main/create_item.html', context)
             item.save()
-            return render(request, 'main/item.html', {'item': item})
+            # return render(request, 'main/item.html', {'item': item})
+            return redirect(BASE_URL)
         context = {
             "form": form,
         }
@@ -59,7 +61,7 @@ def index(request):
     elif sort == 'priciest':
         item_list.sort(key=(lambda item: -item.get_current_bid()))
     elif sort == 'newest':
-        item_list.sort(key=(lambda item: item.created_at))
+        item_list.sort(key=(lambda item: item.start_date))
         item_list.reverse()
     elif sort == 'active':
         item_list.sort(key=(lambda item: item.last_bid_at()))
@@ -87,6 +89,7 @@ def login_view(request):
             except IntegrityError:
                 return render(request, 'main/login.html', {'BASE_URL': BASE_URL, 'already_exists_error': True})
         user = authenticate(username=username, password=password)
+
         if user is not None and user.is_authenticated():
             login(request, user)
         if user is not None and user.is_authenticated():
@@ -131,9 +134,7 @@ def item(request, id):
     current_price = item.get_current_bid()
     time_left = item.get_time_left()
 
-    bids_for_item = []
-    if request.user.is_superuser:
-        bids_for_item = Bid.objects.filter(item=item).order_by('-price', 'created_at')
+    bids_for_item = Bid.objects.filter(item=item).order_by('-price', 'start_date')
 
     if request.method == 'POST':
         if not time_left:
@@ -145,7 +146,8 @@ def item(request, id):
         except ValueError:
             return render(request, 'main/item.html',
                           {'BASE_URL': BASE_URL, 'item': item, 'current_price': current_price, 'bid_error': True})
-        if (bid_price <= current_price or not (bid_price * 4).is_integer()):
+
+        if (bid_price <= current_price):
             return render(request, 'main/item.html',
                           {'BASE_URL': BASE_URL, 'item': item, 'current_price': current_price, 'bid_error': True})
         if (not request.user.is_authenticated()):
@@ -154,7 +156,7 @@ def item(request, id):
         try:
             my_bid = Bid.objects.get(user=request.user, item=item)
             my_bid.price = bid_price
-            my_bid.created_at = datetime.now()
+            my_bid.start_date = datetime.now()
             my_bid.save()
         except Bid.DoesNotExist:
             my_bid = Bid.objects.create(user=request.user, item=item, price=bid_price)

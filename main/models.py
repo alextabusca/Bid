@@ -1,39 +1,44 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
-from decimal import *
 
+CATEGORY_CHOICES = (
+    ('all', 'All'),
+    ('art', 'Art'),
+    ('jewelry', 'Jewelry'),
+    ('antiques', 'Antiques'),
+    ('furniture', 'Furniture'),
+    ('collectibles', 'Collectibles'),
+    ('home&garden', 'Home & Garden'),
+    ('fashion', 'Fashion'),
+)
 
 class Item(models.Model):
-    title = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     description = models.CharField(max_length=600)
     image = models.FileField(upload_to='images/')
-    ask = models.DecimalField(default=0, max_digits=6, decimal_places=2)
-    category = models.CharField(max_length=100)
-    created_at = models.DateTimeField(default=datetime.now, blank=True)
-    closes = models.DateTimeField()
+    initial_price = models.DecimalField(default=0, max_digits=6, decimal_places=2)
+    category = models.CharField(max_length=100, choices=CATEGORY_CHOICES, default='all')
+    start_date = models.DateTimeField(default=datetime.now, blank=True)
+    end_date = models.DateTimeField()
+    creator = models.CharField(max_length=191, null=True)
 
     def last_bid_at(self):
-        bids = Bid.objects.filter(item=self).order_by('-created_at')
+        bids = Bid.objects.filter(item=self).order_by('-start_date')
         if not bids:
-            return self.created_at
+            return self.start_date
         else:
-            return bids[0].created_at
+            return bids[0].start_date
 
     def get_current_bid(self):
-        bids = Bid.objects.filter(item=self).order_by('-price', 'created_at')
+        bids = Bid.objects.filter(item=self).order_by('-price', 'start_date')
         if len(bids) == 0:
-            return self.ask
-        elif len(bids) == 1:
-            return self.ask + Decimal(0.25)
+            return self.initial_price
         else:
-            if bids[1].price == bids[0].price:
-                return bids[1].price
-            else:
-                return bids[1].price + Decimal(0.25)
+            return bids[0].price
 
     def get_winner(self):
-        bids = Bid.objects.filter(item=self).order_by('-price', 'created_at')
+        bids = Bid.objects.filter(item=self).order_by('-price', 'start_date')
         if bids:
             return bids[0].user
         else:
@@ -41,7 +46,7 @@ class Item(models.Model):
 
     def get_time_left(self):
         now = datetime.now()
-        naive = self.closes.replace(tzinfo=None)
+        naive = self.end_date.replace(tzinfo=None)
         delta = naive - now
         ts = int(delta.total_seconds())
         if (ts <= 0):
@@ -65,5 +70,5 @@ class Item(models.Model):
 class Bid(models.Model):
     item = models.ForeignKey(Item)
     user = models.ForeignKey(User)
-    price = models.DecimalField(default=0, max_digits=6, decimal_places=2)
-    created_at = models.DateTimeField(default=datetime.now, blank=True)
+    price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
+    start_date = models.DateTimeField(default=datetime.now, blank=True)
