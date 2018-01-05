@@ -4,34 +4,42 @@
 
 {% block content %}
 
-    <br/>
-    <form action="" method="post">
-        {% csrf_token %}
-        <input name="username" type="text" placeholder="username"/><br/>
-        <input name="password" type="password" placeholder="password"/><br/>
-        <input type="submit" value="log in"/>
-        {% if login_error %}
-            <span class="error">bad credentials!</span>
-        {% endif %}
-    </form>
+    <div align="center">
+        <br/>
+        <h2>Please log into your account:</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            <input name="username" type="text" placeholder="username"/><br/>
+            <input name="password" type="password" placeholder="password"/><br/>
+            <input type="submit" value="log in"
+                   style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"/>
+            {% if login_error %}
+                <span class="error">bad credentials!</span>
+            {% endif %}
+        </form>
+    </div>
 
     <br/>
+    <div align="center">
+        <h2>If you don't have an account please create one:</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            <input name="username" type="text" placeholder="username"/><br/>
+            <input name="password" type="password" placeholder="password"/><br/>
+            <input name="confirm_password" type="password" placeholder="confirm password"/><br/>
+            <input name="first_name" type="text" placeholder="first name"/><br/>
+            <input name="last_name" type="text" placeholder="last name"/><br/>
+            <input name="email" type="text" placeholder="email"/><br/>
+            <input type="submit" value="sign up"
+                   style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"/>
+            {% if signup_error %}
+                <span class="error">bad credentials!</span>
+            {% endif %}
+            {% if already_exists_error %}
+                <span class="error">username already taken!</span>
+            {% endif %}
+        </form>
+    </div>
 
-    <form action="" method="post">
-        {% csrf_token %}
-        <input name="username" type="text" placeholder="username"/><br/>
-        <input name="password" type="password" placeholder="password"/><br/>
-        <input name="confirm_password" type="password" placeholder="confirm password"/><br/>
-        <input name="first_name" type="text" placeholder="first name"/><br/>
-        <input name="last_name" type="text" placeholder="last name"/><br/>
-        <input name="email" type="text" placeholder="email"/><br/>
-        <input type="submit" value="sign up"/>
-        {% if signup_error %}
-            <span class="error">bad credentials!</span>
-        {% endif %}
-        {% if already_exists_error %}
-            <span class="error">username already taken!</span>
-        {% endif %}
-    </form>
 
 {% endblock %}

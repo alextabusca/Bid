@@ -3,10 +3,19 @@
 {% block content %}
 
 
-    <h1>Welcome, {{ user }}!</h1>
+    <h1>Welcome back, {{ user }}!</h1>
 
+    <!-- User's info -->
+    <h3>Your account information: </h3>
+    <p>First Name: {{ user.first_name }}</p>
+    <p>Last Name: {{ user.last_name }}</p>
+    <p>E-mail: {{ user.email }}</p>
+
+    <h2>Create a new auction: </h2>
+    <a href="create_item" class="button">Add new item</a>
+
+    <!-- Display winning items -->
     <h2>You are currently the winning bidder for:</h2>
-
     {% if winning_items %}
         <div id="listing">
             {% for item in winning_items %}
@@ -18,8 +27,8 @@
         Nothing right now!
     {% endif %}
 
+    <!-- Losing items -->
     <h2>Your bids have been beaten for:</h2>
-
     {% if beaten_items %}
         <div id="listing">
             {% for item in beaten_items %}
@@ -31,17 +40,5 @@
         Nothing right now!
     {% endif %}
 
-    <h2>Add item</h2>
-
-    <!-- Check if this shows -->
-    <div id="create_item_button">
-        <a href="create_item">Add New Item</a>
-    </div>
-
-    <!-- User's info -->
-    <h3>Your info: </h3>
-    <p>First Name: {{ user.first_name }}</p>
-    <p>Last Name: {{ user.last_name }}</p>
-    <p>E-mail: {{ user.email }}</p>
 
 {% endblock %}
