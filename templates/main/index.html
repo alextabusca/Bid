@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
 
 {% block content %}
+    <div align="center">
     <ul id="categories">
         <li {% ifequal category "all" %} class="current">
         {% else %}><a href="{{ BASE_URL }}{% ifnotequal sort 'active' %}?sort={{ sort }}{% endifnotequal %}">
@@ -42,7 +43,9 @@
         {% endifequal %}Fashion</a>
         </li>
     </ul>
+    </div>
 
+    <div align="right">
     <ul id="sorts">
         <li {% ifequal sort "active" %} class="current">
         {% else %}><a href="{{ BASE_URL }}{% ifnotequal category 'all' %}?category={{ category }}{% endifnotequal %}">
@@ -50,26 +53,21 @@
         </li>
         <li {% ifequal sort "newest" %} class="current">
         {% else %}><a href="
-
-
                     {{ BASE_URL }}{% ifnotequal category 'all' %}?category={{ category }}&{% else %}?{% endifnotequal %}sort=newest">
         {% endifequal %}Newest</a>
         </li>
         <li {% ifequal sort "cheapest" %} class="current">
         {% else %}><a href="
-
-
                     {{ BASE_URL }}{% ifnotequal category 'all' %}?category={{ category }}&{% else %}?{% endifnotequal %}sort=cheapest">
         {% endifequal %}Cheapest</a>
         </li>
         <li {% ifequal sort "priciest" %} class="current">
         {% else %}><a href="
-
-
                     {{ BASE_URL }}{% ifnotequal category 'all' %}?category={{ category }}&{% else %}?{% endifnotequal %}sort=priciest">
         {% endifequal %}Most Expensive</a>
         </li>
     </ul>
+    </div>
 
 
     <div id="listing">

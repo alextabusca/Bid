@@ -3,6 +3,7 @@
 {% block title %} | Log In{% endblock %}
 
 {% block content %}
+
     <br/>
     <form action="" method="post">
         {% csrf_token %}
@@ -32,4 +33,5 @@
             <span class="error">username already taken!</span>
         {% endif %}
     </form>
+
 {% endblock %}
