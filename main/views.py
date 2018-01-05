@@ -132,6 +132,7 @@ def item(request, id):
     item = Item.objects.get(id=id)
     current_price = item.get_current_bid()
     time_left = item.get_time_left()
+    min_bid = 1
 
     bids_for_item = Bid.objects.filter(item=item).order_by('-price', 'start_date')
 
@@ -146,9 +147,10 @@ def item(request, id):
             return render(request, 'main/item.html',
                           {'BASE_URL': BASE_URL, 'item': item, 'current_price': current_price, 'bid_error': True})
 
-        if (bid_price <= current_price):
+        if (bid_price <= current_price + min_bid):
             return render(request, 'main/item.html',
                           {'BASE_URL': BASE_URL, 'item': item, 'current_price': current_price, 'bid_error': True})
+
         if (not request.user.is_authenticated()):
             return redirect(BASE_URL)
 

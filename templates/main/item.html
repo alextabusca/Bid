@@ -28,12 +28,13 @@
                         <p>$<input name="bid_price" type="text" placeholder="your bid"/>
                             {% if bid_error %}
                                 <span class="error">Invalid bid!</span>
+
                             {% endif %}
                             {% if bid_success %}
                                 <span class="success">Bid submitted!</span>
                             {% endif %}
                             <br/>
-                            (must be > ${{ current_price }})</p>
+                            (must be > ${{ current_price }} + 1)</p>
                         <p>By clicking "submit bid" you are agreeing to pay up to that amount for this item unless
                             someone
                             else beats your bid before closing time.<br/>
