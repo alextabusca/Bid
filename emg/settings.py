@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'bid',
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'root',
-        'PASSWORD': 'password',
+        'PASSWORD': 'root',
         # 'OPTIONS': {
         #   'autocommit': True,
         # },

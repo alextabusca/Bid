@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 
+# new choices (inspired from liveauctioneers.com)
 CATEGORY_CHOICES = (
     ('all', 'All'),
     ('art', 'Art'),
@@ -21,6 +22,7 @@ class Item(models.Model):
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICES, default='all')
     start_date = models.DateTimeField(default=datetime.now, blank=True)
     end_date = models.DateTimeField()
+    # asta ii ca sa vedem daca un user care pune bid ii creatoru licitatiei sau ba
     creator = models.CharField(max_length=191, null=True)
 
     def last_bid_at(self):
@@ -68,7 +70,7 @@ class Item(models.Model):
 
 
 class Bid(models.Model):
-    item = models.ForeignKey(Item)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
     user = models.ForeignKey(User)
     price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     start_date = models.DateTimeField(default=datetime.now, blank=True)

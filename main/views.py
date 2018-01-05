@@ -10,7 +10,6 @@ from django.shortcuts import render
 
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
-
 def create_item(request):
     if not request.user.is_authenticated():
         return render(request, 'main/login.html')
@@ -192,3 +191,10 @@ def item(request, id):
             'beaten': beaten if item.get_winner() != request.user else False,
             'winner': winner
         })
+
+
+# Aici faci cancel la auction
+def cancel_auction(request, id):
+    item = Item.objects.get(id=id)
+    item.delete()
+    return index(request)

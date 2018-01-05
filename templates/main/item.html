@@ -40,7 +40,16 @@
                             <input type="submit" value="submit bid"/></p>
                     </form>
                 {% else %}
+                    <!-- Aici nu poti pune bid ca ii a tau itemu si poti da cancel la el daca vrei -->
                     <p>You cannot bid because you are the auctioneer!</p>
+                    <form action="{% url 'cancel_auction' item.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ item.id }}"/>
+                        <button type="submit" class="btn btn-default btn-sm">Cancel Auction
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </form>
+                    <!-- Pana aici facut-am -->
                 {% endif %}
             {% else %}
                 <p><a href="{{ BASE_URL }}login">Log in</a> to bid on this item.</p>

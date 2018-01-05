@@ -26,5 +26,7 @@ urlpatterns = [
                   url(r'logout/$', views.logout_view, name='logout_view'),
                   url(r'me/$', views.me, name='me'),
                   url(r'item/(?P<id>\d*)/$', views.item, name='item'),
-                  url(r'create_item/', views.create_item, name='create_item')
+                  url(r'create_item/', views.create_item, name='create_item'),
+                  # asta l-am pus pentru cancel auction
+                  url(r'^item/(?P<id>[0-9]+)/cancel_auction/$', views.cancel_auction, name='cancel_auction')
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
