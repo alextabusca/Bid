@@ -81,10 +81,16 @@ def login_view(request):
         password = request.POST['password']
         if 'confirm_password' in request.POST:
             confirm_password = request.POST['confirm_password']
+            firstname = request.POST['first_name']
+            lastname = request.POST['last_name']
+            email = request.POST['email']
             if (username == "" or password == "" or password != confirm_password):
                 return render(request, 'main/login.html', {'BASE_URL': BASE_URL, 'signup_error': True})
             try:
-                User.objects.create_user(username, password=password)
+                User.objects.create_user(username, password=password,
+                                         first_name=firstname,
+                                         last_name=lastname,
+                                         email=email)
             except IntegrityError:
                 return render(request, 'main/login.html', {'BASE_URL': BASE_URL, 'already_exists_error': True})
         user = authenticate(username=username, password=password)
