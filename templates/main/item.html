@@ -2,6 +2,12 @@
 
 {% block content %}
 
+    <script>
+        function clickAlert() {
+            alert("Confirmation: You deleted the auction!");
+        }
+    </script>
+
     <h1>{{ item.name }} (${{ current_price }})</h1>
 
     <div style="float:left">
@@ -38,7 +44,9 @@
                         <p>By clicking "submit bid" you are agreeing to pay up to that amount for this item unless
                             someone
                             else beats your bid before closing time.<br/>
-                            <input type="submit" value="submit bid"/></p>
+                            <input type="submit" value="Submit bid"
+                                   style="box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"/>
+                        </p>
                     </form>
                 {% else %}
                     <!-- Aici nu poti pune bid ca ii a tau itemu si poti da cancel la el daca vrei -->
@@ -46,7 +54,7 @@
                     <form action="{% url 'cancel_auction' item.id %}" method="post" style="display: inline;">
                         {% csrf_token %}
                         <input type="hidden" name="id" value="{{ item.id }}"/>
-                        <button type="submit" class="btn btn-default btn-sm">Cancel Auction
+                        <button type="submit" class="btn btn-default btn-sm" onclick="clickAlert()">Cancel Auction
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                     </form>
@@ -68,17 +76,20 @@
 
     <div style="clear:both"></div>
     <hr/>
-    <table border=1>
+    <p>Submitted bids:</p>
+    <table id="bidders" border=1>
+        <tr>
+            <th align="center">Offer</th>
+            <th align="center">Bidder</th>
+            <th align="center">Time of bid</th>
+        </tr>
         {% for bid in bids_for_item %}
             <tr>
-                <td>{{ bid.price }}</td>
-                <td>{{ bid.user }}</td>
-                <td>{{ bid.start_date }}</td>
+                <td align="center">{{ bid.price }}</td>
+                <td align="center">{{ bid.user }}</td>
+                <td align="center">{{ bid.start_date }}</td>
             </tr>
         {% endfor %}
     </table>
-
-
-
 
 {% endblock %}

@@ -104,8 +104,15 @@
             -moz-appearance: button;
             appearance: button;
 
+            background-color: #0af;
+            border: none;
+            border-radius: 5px;
+            color: black;
+            padding: 10px 25px;
+            text-align: center;
             text-decoration: none;
-            color: initial;
+            display: inline-block;
+            font-size: 16px;
             box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
@@ -150,6 +157,33 @@
 
         .item .seller {
             float: right;
+        }
+
+        #bidders {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 30%;
+        }
+
+        #bidders td, #bidders th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #bidders tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #bidders tr:hover {
+            background-color: #ddd;
+        }
+
+        #bidders th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
         }
     </style>
 
