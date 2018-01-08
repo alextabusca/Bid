@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.core.validators import MinValueValidator
 
 # new choices (inspired from liveauctioneers.com)
 CATEGORY_CHOICES = (
@@ -18,7 +19,9 @@ class Item(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=600)
     image = models.FileField(upload_to='images/')
-    initial_price = models.DecimalField(default=0, max_digits=6, decimal_places=2)
+    initial_price = models.DecimalField(default=0, max_digits=6, decimal_places=2,
+                                        validators=[
+                                            MinValueValidator(0.0, message="Initial price must be greater than 0!")])
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICES, default='all')
     start_date = models.DateTimeField(default=datetime.now, blank=True)
     end_date = models.DateTimeField()
@@ -51,7 +54,7 @@ class Item(models.Model):
         naive = self.end_date.replace(tzinfo=None)
         delta = naive - now
         ts = int(delta.total_seconds())
-        if (ts <= 0):
+        if ts <= 0:
             return ""
         else:
             days = int(ts / 86400)

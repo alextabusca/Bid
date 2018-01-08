@@ -30,7 +30,7 @@ def create_item(request):
                 }
                 return render(request, 'main/create_item.html', context)
             item.save()
-            # return render(request, 'main/item.html', {'item': item})
+
             return redirect(BASE_URL)
         context = {
             "form": form,
@@ -112,7 +112,7 @@ def logout_view(request):
 
 def me(request):
     if (request.user.is_authenticated()):
-        # This is really inefficient, but w/e
+
         all_items = Item.objects.all()
         winning_items = []
         beaten_items = []
@@ -153,11 +153,11 @@ def item(request, id):
             return render(request, 'main/item.html',
                           {'BASE_URL': BASE_URL, 'item': item, 'current_price': current_price, 'bid_error': True})
 
-        if (bid_price <= current_price + min_bid):
+        if bid_price <= current_price + min_bid:
             return render(request, 'main/item.html',
                           {'BASE_URL': BASE_URL, 'item': item, 'current_price': current_price, 'bid_error': True})
 
-        if (not request.user.is_authenticated()):
+        if not request.user.is_authenticated():
             return redirect(BASE_URL)
 
         try:
@@ -200,8 +200,6 @@ def item(request, id):
             'winner': winner
         })
 
-
-# Aici faci cancel la auction
 def cancel_auction(request, id):
     item = Item.objects.get(id=id)
     item.delete()

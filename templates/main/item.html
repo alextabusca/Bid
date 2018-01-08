@@ -16,6 +16,7 @@
 
     <div style="width: calc(100% - 260px); float:left; margin-left:10px;">
         <b>Description:</b> {{ item.description }}
+        <br><b>Auction created by:</b> {{ item.creator }}
         <p>
             This auction
             {% if item.get_time_left %}
@@ -49,7 +50,7 @@
                         </p>
                     </form>
                 {% else %}
-                    <!-- Aici nu poti pune bid ca ii a tau itemu si poti da cancel la el daca vrei -->
+                    <!-- You cannot place bids here since it's your item. You can cancel it -->
                     <p>You cannot bid because you are the auctioneer!</p>
                     <form action="{% url 'cancel_auction' item.id %}" method="post" style="display: inline;">
                         {% csrf_token %}
@@ -58,7 +59,6 @@
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                     </form>
-                    <!-- Pana aici facut-am -->
                 {% endif %}
             {% else %}
                 <p><a href="{{ BASE_URL }}login">Log in</a> to bid on this item.</p>
